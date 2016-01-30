@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Rando Calrissian</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+          integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <link href="http://allfont.net/allfont.css?fonts=star-jedi" rel="stylesheet" type="text/css"/>
+    <link href='https://fonts.googleapis.com/css?family=Oswald:300,700,400' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <script src="//code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
+
+
+    <!-- handlebar template for character info -->
+    <script id="character_template" type="text/x-handlebars-template">​
+        <div class="row">
+            <div class="col-sm-12">
+                <h1> {{ name }} </h1>
+            </div>
+        </div>
+        ​
+        <div class="row">
+            <div class="row">
+                <div class="col-sm-12">
+                    <img src="{{ image }}" class="img-responsive">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <p>
+                        {{ description }} <a href="{{ databank_url }}" target="_blank">More Info</a>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    {{#each appearances}}
+                    <span class="label {{ appearance-label this}}">{{ this }}</span>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+
+
+        ​
+    </script>
+
+    <!-- read json data, select character and render template -->
+    <script>
+        Handlebars.registerHelper('appearance-label', function (title) {
+            return 'label-' + title.toLowerCase().replace(/[\:,\;]|\s/g, '-');
+        });
+        $.getJSON("character_data.json", function (data) {
+            var random_character = data[Math.floor(Math.random() * data.length)];
+            var source = $('#character_template').html();
+            var template = Handlebars.compile(source);
+            var html = template(random_character);
+            $("#character_content").html(html);
+        });
+
+
+    </script>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand brand-text" href=".">Rando Calrissian</a>
+        </div>
+    </div>
+</nav>
+<div id="character_content" class="container"></div>
+</body>
+</html>
