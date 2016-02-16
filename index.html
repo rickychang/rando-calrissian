@@ -48,47 +48,10 @@
                 </div>
             </div>
         </div>
-
-
-        ​
     </script>
-
-    <!-- read json data, select character and render template -->
-    <script>
-        Handlebars.registerHelper('appearance-label', function (title) {
-            return 'label-' + title.toLowerCase().replace(/[\:,\;]|\s/g, '-');
-        });
-        var queryDict = {}
-        location.search.substr(1).split("&").forEach(function(item) {
-            var queryKey = item.split("=")[0];
-            var queryValue = item.split("=")[1];
-            if (queryValue) {
-                queryDict[queryKey] = queryValue.replace(/^\/|\/$/g, '');
-            }
-        })
-        var character_slug = queryDict["c"];
-        var character_slug_map = {};
-        $.getJSON("character_data.json", function (data) {
-            for (i = 0; i < data.length; i++) {
-                character_slug_map[data[i]['slug']] = data[i];
-            }
-            var slug_list = Object.keys(character_slug_map);
-            if (character_slug && character_slug_map[character_slug]) {
-                var character_data = character_slug_map[character_slug];
-                var source = $('#character_template').html();
-                var template = Handlebars.compile(source);
-                var html = template(character_data);
-                $("#character_content").html(html);
-            } else {
-                window.location = '/?c=' + slug_list[Math.floor(Math.random() * slug_list.length)];
-            }
-        });
-
-
-    </script>
+    <script src="main.js"></script>
 </head>
 <body>
-
 <!-- Google Tag Manager -->
 <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NVZMBS"
                   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -107,5 +70,14 @@
     </div>
 </nav>
 <div id="character_content" class="container"></div>
+<nav class="navbar navbar-default navbar-fixed-bottom text-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <a class="footer-nav" href="/">This isn't the character you're looking for...</a>
+            </div>
+        </div>
+    </div>
+</nav>
 </body>
 </html>
